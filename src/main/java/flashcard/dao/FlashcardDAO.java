@@ -1,10 +1,13 @@
 package flashcard.dao;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -255,7 +258,7 @@ public class FlashcardDAO
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, selectedDeck.getDeckID());
 			ResultSet result = statement.executeQuery();
-			FileWriter myWriter = new FileWriter(exportDir);
+			Writer myWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(exportDir), "UTF-8"));
 			while(result.next())
 			{
 				myWriter.write(result.getString("front"));
