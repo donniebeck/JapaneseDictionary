@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Flashcard
 {
-	private static final double FREQUENCY_MODIFIER = 1.5;
+	private static final double FREQUENCY_MODIFIER = 2.0;
 	int cardID;
 	int deckID;
 	String front;
@@ -78,7 +78,14 @@ public class Flashcard
 	}
 	public void setFrequencyMultiplier(double frequencyMultiplier)
 	{
-		this.frequencyMultiplier = frequencyMultiplier;
+		if(frequencyMultiplier <= 0)
+		{
+			this.frequencyMultiplier = 0;
+		}
+		else
+		{
+			this.frequencyMultiplier = frequencyMultiplier;
+		}
 	}
 	public void setDue(LocalDateTime due)
 	{
@@ -114,21 +121,21 @@ public class Flashcard
 	}
 	public void miss()
 	{
-		setDueNow();
 		setStreak(0);
-		setFrequencyMultiplier(this.frequencyMultiplier-(2*FREQUENCY_MODIFIER));
+		setFrequencyMultiplier(this.frequencyMultiplier/(2*FREQUENCY_MODIFIER));
+		calculateDueDate();
 	}
 	public void good()
 	{
 		setStreak(getStreak()+1);
-		setFrequencyMultiplier(this.frequencyMultiplier+FREQUENCY_MODIFIER);
+		setFrequencyMultiplier(this.frequencyMultiplier*FREQUENCY_MODIFIER);
 		calculateDueDate();
 		
 	}
 	public void great()
 	{
 		setStreak(getStreak()+1);
-		setFrequencyMultiplier(this.frequencyMultiplier+(FREQUENCY_MODIFIER*FREQUENCY_MODIFIER));
+		setFrequencyMultiplier(this.frequencyMultiplier*(2*FREQUENCY_MODIFIER));
 		calculateDueDate();
 	}
 	public void calculateDueDate()
