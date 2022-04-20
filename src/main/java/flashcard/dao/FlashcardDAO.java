@@ -3,9 +3,10 @@ package flashcard.dao;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.sql.Connection;
@@ -292,9 +293,11 @@ public class FlashcardDAO
 			statement.close();
 			char record_separator = 0x1e;
 			char unit_separator = 0x1f;
-			
-			BufferedReader in = new BufferedReader(new FileReader(importedFile), 16*1024);
-			Scanner read = new Scanner(in);
+
+			FileInputStream is = new FileInputStream(importedFile);
+			InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+			BufferedReader reader = new BufferedReader(isr);
+			Scanner read = new Scanner(reader);
 		    read.useDelimiter(""+record_separator+"");
 		    while(read.hasNext())
 		    {
